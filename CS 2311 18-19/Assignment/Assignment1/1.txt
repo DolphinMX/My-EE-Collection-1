@@ -1,0 +1,270 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+ 
+int pow(int, int);
+string conv(int, int);
+ 
+int main() {
+    long long net_income = 0;
+    const int MAX_NI = 100000000; 
+    bool flag = false; // the flag controls whether the loop can finish
+    while (true) {
+        // the following loop verifies whether the net income input is valid
+        while (flag != true) {
+            cout << "Enter Salary Income (max 100000000): ";
+            cin >> net_income;
+            if (!cin || (net_income > MAX_NI || net_income < 0)) { // in case the input is not int or int that is out of the range
+                cout << "!!!!! Invalid Income Value!!" << endl;
+                // below two line clear the input failure state and remove the invalid input
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+            else if (net_income == 0) {
+                cout << "Goodbye.";
+                return 0;
+            }
+            else {
+                flag = true;
+            }
+        }
+        flag = false; // refresh the state of flag for another loop
+        long long allowances = 0;
+        const int MAX_A = 1000000;
+        // the following loop verifies whether the allowances input is valid
+        while (flag != true) {
+            cout << "Enter Allowance (max 1000000): ";
+            cin >> allowances;
+            if (!cin || (allowances > MAX_A || allowances < 0)) {
+                cout << "!!!!! Invalid Allowance Value!!" << endl;
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
+            else {
+                flag = true;
+            }
+        }
+        flag = false;
+        // the following part calculates the tax payable and compares which method should be adopted
+        int nci = net_income - allowances; // nci stands for net chargeable income
+        double tax = 0;
+        // make sure nci is larger than 0, for negative or 0 nci, no tax should be paid
+        if (nci > 0) {
+            double tax_pr = 0; // tax under progressive rate
+            switch (nci / 45000) {
+            case 0: // nci < 45000
+                tax_pr = nci * 0.02;
+                break;
+            case 1: // nci < 90000
+                tax_pr = (nci - 45000) * 0.07 + 900;
+                break;
+            case 2: // nci < 135000
+                tax_pr = (nci - 90000) * 0.12 + 3150 + 900;
+                break;
+            default: // nci >= 135000
+                tax_pr = (nci - 135000) * 0.17 + 5400 + 3150 + 900;
+                break;
+            }
+            // compare which methods pay less
+            tax = net_income * 0.15; // assume stantard tax pays more
+            if (tax_pr < tax) {
+                tax = tax_pr;
+            }
+        }
+        cout << "Tax Payable : $ " << setprecision(2) << fixed << tax << endl;
+        // round off 
+        if (tax >= (int(tax) + 0.5)) {
+            tax = int(tax) + 1;
+        }
+        else {
+            tax = (int)tax;
+        }
+        // the following part formulate the english word string
+        if ((int)tax == 0) {
+            cout << "No Payment is required." << endl;
+        }
+        else {
+            string english_word = "***** ";
+            int d[8] = { 0,0,0,0,0,0,0,0 };
+            int remainder = int(tax);
+            // store the tax degit in an int array
+            for (int i = 0; i < 8; i++) {
+                d[i] = remainder / pow(10, (7 - i));
+                remainder = remainder % pow(10, (7 - i));
+            }
+            for (int i = 0; i < 8; i++) {
+                if (i == 0 || i == 3 || i == 6) { // these digits are ten digit of million, thousand and single digit
+                    if (d[i] > 1) {
+                        english_word += conv(d[i], 0); // case one such as twenty, thirty
+                    }
+                    else if (d[i] == 1) {
+                        english_word += conv(d[i], d[i + 1]); // case three such as eleven, twelve since d[i] must be 1
+                        i += 1; // skip next digit as it is already considered
+                    }
+                }
+                else {
+                    english_word += conv(0, d[i]); // case two such as one, two 
+                }
+                if (i == 1 && ((d[1] || d[0]) != 0)) { 
+                    english_word += "Million ";
+                    if (d[2] == 0 && ((d[3] || d[4]) != 0)) {
+                        english_word += "and ";
+                    }
+                    else if ((d[2] || d[3] || d[4]) == 0 && (d[5] || d[6] || d[7] != 0)) {
+                        english_word += "and ";
+                    }
+                }
+                if (i == 2 && d[2] != 0) {
+                    english_word += "Hundred ";
+                    if ((d[3] || d[4]) != 0) {
+                        english_word += "and ";
+                    }
+                    else if (d[3] || d[4] == 0 && (d[5] || d[6] || d[7]) != 0) {
+                        english_word += "Thousand and ";
+                    }
+                }
+                if (i == 4 && ((d[3] || d[4]) != 0)) {
+                    english_word += "Thousand ";
+                    if (d[5] == 0 && ((d[6] || d[7]) != 0)) {
+                        english_word += "and ";
+                    }
+                }
+                if (i == 5 && d[5] != 0) {
+                    english_word += "Hundred ";
+                    if ((d[6] || d[7]) != 0) {
+                        english_word += "and ";
+                    }
+                }
+            }
+            if (tax == 1) { // if only one dollar is taxed
+                english_word += "Dollar.";
+            }
+            else {
+                english_word += "Dollars.";
+            }
+            cout << english_word << endl;
+        }
+    }   
+    return 0;
+}
+ 
+/*------------------------------------------------------------------*/ 
+/*  this function converts the int into english word in this manner */
+/*  case 1: int(d1, 0) -> ten, twenty, thirty, fourty and so on      */
+/*  case 2: int(0, d2) -> one, two, three and so on                  */
+/*  case 3: int(1, d2) -> eleven, twelve and so on                   */
+/*------------------------------------------------------------------*/
+string conv(int d1, int d2) {
+    string english_word;
+    if (d1 == 0) {
+        switch (d2) {
+        case 1:
+            english_word = "One ";
+            break;
+        case 2:
+            english_word = "Two ";
+            break;
+        case 3:
+            english_word = "Three ";
+            break;
+        case 4:
+            english_word = "Four ";
+            break;
+        case 5:
+            english_word = "Five ";
+            break;
+        case 6:
+            english_word = "Six ";
+            break;
+        case 7:
+            english_word = "Seven ";
+            break;
+        case 8:
+            english_word = "Eight ";
+            break;
+        case 9:
+            english_word = "Nine ";
+            break;
+        }
+    }
+    else if (d2 == 0) {
+        switch (d1) {
+        case 1:
+            english_word = "Ten ";
+            break;
+        case 2:
+            english_word = "Twenty ";
+            break;
+        case 3:
+            english_word = "Thirty ";
+            break;
+        case 4:
+            english_word = "Forty ";
+            break;
+        case 5:
+            english_word = "Fifty ";
+            break;
+        case 6:
+            english_word = "Sixty ";
+            break;
+        case 7:
+            english_word = "Seventy ";
+            break;
+        case 8:
+            english_word = "Eighty ";
+            break;
+        case 9:
+            english_word = "Ninety ";
+            break;
+        }
+    }
+    else if (d1 == 1) {
+        switch (d2) {
+        case 1:
+            english_word = "Eleven ";
+            break;
+        case 2:
+            english_word = "Twelve ";
+            break;
+        case 3:
+            english_word = "Thirteen ";
+            break;
+        case 4:
+            english_word = "Fourteen ";
+            break;
+        case 5:
+            english_word = "Fifteen ";
+            break;
+        case 6:
+            english_word = "Sixteen ";
+            break;
+        case 7:
+            english_word = "Seventeen ";
+            break;
+        case 8:
+            english_word = "Eighteen ";
+            break;
+        case 9:
+            english_word = "Nineteen ";
+            break;
+        }
+    }
+    return english_word;
+}
+ 
+/*--------------------------------------------------*/
+/*  this function receive input (int d1, int d2)    */
+/*  and output d1 ^ d2                              */
+/*  ex. pow(5,2) returns 25                         */
+/*--------------------------------------------------*/
+int pow(int d1, int d2) {
+    int ans = 1;
+    if (d2 == 0) {
+        return ans;
+    }
+    for (int i = 0; i < d2; i++) {
+        ans *= d1;
+    }
+    return ans;
+}

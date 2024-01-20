@@ -1,0 +1,32 @@
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+ 
+int main() {
+    char c, inWord[50], outWord[50];
+    int j = 0;
+ 
+    // Add your code here to read a string that may contain multiple words
+    cin.getline(inWord, 50);
+    while(inWord[j] != '\0') {
+        j++;
+    }
+    //Add your logic here to check for and to convert to uppercases
+    for(int i = 0; i != j; i++) {
+        if(inWord[i] <= 'Z' && inWord[i] >= 'A') {
+            outWord[i] = inWord[i] + ('z' - 'Z');
+             
+        } 
+        else if(inWord[i] <= 'z' && inWord[i] >= 'a'){
+            outWord[i] = inWord[i] - ('z' - 'Z');
+        }   
+        else
+            outWord[i] = inWord[i];
+        cout << outWord[i];
+    }
+    //How to mark the end of outWord here?
+    //(user input may be less than 50 chars)
+    cin >> j;
+    return 0;
+}

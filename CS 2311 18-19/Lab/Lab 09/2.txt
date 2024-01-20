@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+ 
+class triangle {
+public:
+    triangle();
+    triangle(double, double, double);
+    void setSides(double, double, double);
+    void computeArea();
+    void getArea();
+private:
+    double side1, side2, side3;
+    double area;
+};
+ 
+triangle::triangle(){
+    side1 = 0;
+    side2 = 0;
+    side3 = 0;
+    area = 0;
+}
+ 
+triangle::triangle(double s1, double s2, double s3){
+    side1 = s1;
+    side2 = s2;
+    side3 = s3;
+    area = 0;
+}
+ 
+void triangle::setSides(double s1, double s2, double s3){
+    side1 = s1;
+    side2 = s2;
+    side3 = s3;
+}
+ 
+void triangle::computeArea() {
+    double s = (side1 + side2 + side3) / 2;
+    area = sqrt(s * (s - side1) * (s - side2) * (s - side3));
+}
+ 
+void triangle::getArea(){
+    cout << fixed;
+    cout << setprecision(2) << area << endl;
+}
+ 
+int main() {
+    triangle t1;
+    triangle t2(3,4,5);
+    t2.computeArea();
+    cout << "Area of triangle1: ";
+    t1.getArea();
+    cout << "Area of triangle2: ";
+    t2.getArea();
+    double s1, s2, s3;
+    cout << "Enter new sides for triangle1: "<< endl;
+    cin >> s1 >> s2 >> s3;
+    t1.setSides(s1,s2,s3);
+    cout << "Area of triangle1: ";
+    t1.computeArea();
+    t1.getArea();
+    return 0;
+}

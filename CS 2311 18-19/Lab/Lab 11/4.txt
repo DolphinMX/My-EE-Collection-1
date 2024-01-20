@@ -1,0 +1,29 @@
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+ 
+void strexchg(const char *&m1, const char *&m2) {
+    // TODO: swap the values of m1 and m2 using call by reference
+    const char *temp = m1;
+    m1 = m2;
+    m2 = temp;
+}
+ 
+int main() {
+    const int N = 6;
+    const char *course[] = {"Mathematics", "English", "Data structures", "C++ Programming", "Internet",
+                            "Java Programming"};
+    // TODO: sort the array in an ascending alphabetical order
+    int j = 1;
+    for (int i = 0; i < N; i++){
+        for (int j = N - 1; j > 0; j--) {
+            if(course[j][0] < course[j - 1][0]) {
+                strexchg(course[j], course[j-1]);
+            }
+        }
+        cout << course[i] << endl;
+    }
+    cin >> j;
+    return 0;
+}

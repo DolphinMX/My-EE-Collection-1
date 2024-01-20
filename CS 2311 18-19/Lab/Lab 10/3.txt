@@ -1,0 +1,36 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+  
+void getInput(double &v, double &i) {
+      
+    cout << "Please enter two values: ";
+    cin >> v >> i;
+    //TODO: read voltage and current and pass them back using call by reference
+}
+  
+double toResistance(double v, double i) {
+    double r = v / i;
+    return r;
+    //TODO return the resistance based on the voltage and current
+}
+  
+void swap(double &v, double &i) { 
+    double temp = v;
+    v = i;
+    i = temp;
+    //TODO swap the values of V and I using call by reference
+}
+  
+void main(){
+    double voltage, current;
+      
+    getInput(voltage, current);
+    cout << "The value of one resistance is ";
+    cout << fixed << setprecision(2) << toResistance(voltage, current) << endl;
+      
+    swap(voltage, current);
+      
+    cout << "The value of the other resistance is ";
+    cout << fixed << setprecision(2) << toResistance(voltage, current) << endl;
+}

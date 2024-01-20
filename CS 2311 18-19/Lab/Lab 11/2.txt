@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    int vCount = 0;
+    int cCount = 0;
+    char as[100];
+    char *s = as;
+    cin >> s;
+    while(*s != '\0') {
+        cCount++;
+        if (*s > 'Z'){
+            *s = *s - ('z' - 'Z');
+            if (*s == 'A' || *s == 'E' || *s == 'I' || *s == 'O' || *s == 'U'){
+            vCount++;
+            }
+        }
+        else if (*s == 'A' || *s == 'E' || *s == 'I' || *s == 'O' || *s == 'U'){
+            vCount++;
+        }
+        s++;
+    }
+    cout << "The number of characters is: " << cCount << endl;
+    cout << "The number of vowels is: " << vCount << endl;
+    cin >> vCount;
+}

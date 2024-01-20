@@ -1,0 +1,72 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+ 
+class triangle {
+public:
+    triangle();
+    triangle(double, double, double);
+    void setSides(double, double, double);
+    void computeArea();
+    void getArea();
+    void largertriangle(triangle, triangle);
+private:
+    double side1, side2, side3;
+    double area;
+};
+ 
+triangle::triangle(){
+    side1 = 0;
+    side2 = 0;
+    side3 = 0;
+    area = 0;
+}
+ 
+triangle::triangle(double s1, double s2, double s3){
+    side1 = s1;
+    side2 = s2;
+    side3 = s3;
+    area = 0;
+}
+ 
+void triangle::largertriangle(triangle t1, triangle t2){
+    cout << fixed;
+    if(t1.area > t2.area) {
+        cout << setprecision(2) <<"The area of triangle1 (" << t1.area << ") is greater than that of triangle2 (" << t2.area << ")." << endl;
+    }
+    else {
+        cout << setprecision(2) <<"The area of triangle1 (" << t1.area << ") is not greater than that of triangle2 (" << t2.area << ")." << endl;
+    }
+}
+ 
+void triangle::setSides(double s1, double s2, double s3){
+    side1 = s1;
+    side2 = s2;
+    side3 = s3;
+}
+ 
+void triangle::computeArea() {
+    double s = (side1 + side2 + side3) / 2;
+    area = sqrt(s * (s - side1) * (s - side2) * (s - side3));
+}
+ 
+void triangle::getArea(){
+    cout << fixed;
+    cout << setprecision(2) << area << endl;
+}
+ 
+int main() {
+    cout << "Enter new sides for triangle1:" << endl;
+    double s1a = 0,s2a = 0,s3a = 0;
+    double s1b = 0,s2b = 0,s3b = 0;
+    cin >> s1a >> s2a >> s3a;
+    cout << "Enter new sides for triangle2:" << endl;
+    cin >> s1b >> s2b >> s3b;
+    triangle t1(s1a,s2a,s3a);
+    triangle t2(s1b,s2b,s3b);
+    t1.computeArea();
+    t2.computeArea();
+    t1.largertriangle(t1,t2);
+    return 0;
+}

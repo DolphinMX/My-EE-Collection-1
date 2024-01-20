@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    int current_y;
+    int current_m;
+    int age;
+    int desire_y;
+    int desire_m;
+    int born_y;
+    int born_m;
+    int lived_y;
+    int lived_m;
+    cout << "Enter the Current Year: ";
+    cin >> current_y;
+    cout << "Enter the Current Month (a number in range from 1 to 12): ";
+    cin >> current_m;
+    cout << "Enter Your Current age in Years: ";
+    cin >> age;
+    cout << "Enter the Month in which you were born (a number in number from 1 to 12): ";
+    cin >> born_m;
+    cout << "Enter the Year for which you want to know your age: ";
+    cin >> desire_y;
+    cout << "Enter the Month of Year" << " " << desire_y << ": ";
+    cin >> desire_m;
+    born_y = current_y - age;
+    if (current_m < born_m) {
+        born_y -= 1;
+    }
+    if (desire_m < born_m) {
+        lived_y = desire_y - born_y - 1;
+    }
+    else {
+        lived_y = desire_y - born_y;
+    }
+    if (desire_m >= born_m) {
+        lived_m = desire_m - born_m;
+    }
+    else {
+        lived_m = desire_m + (12 - born_m);
+    }
+    if (lived_y > 1 && lived_m > 1) {
+        cout << "Your age in " << desire_m << "/" << desire_y << " is : " << lived_y << " years and " << lived_m << " months";
+    }
+    if (lived_y == 1 && lived_m > 1) {
+        cout << "Your age in " << desire_m << "/" << desire_y << " is : " << lived_y << " year and " << lived_m << " months";
+    }
+    if (lived_y > 1 && lived_m == 1) {
+        cout << "Your age in " << desire_m << "/" << desire_y << " is : " << lived_y << " years and " << lived_m << " month";
+    }
+    if (lived_y == 1 && lived_m == 1) {
+        cout << "Your age in " << desire_m << "/" << desire_y << " is : " << lived_y << " year and " << lived_m << " month";
+    }
+    if (lived_y == 1 && lived_m == 0) {
+        cout << "Your age in " << desire_m << "/" << desire_y << " is : " << lived_y << " year";
+    }
+    if (lived_y > 1 && lived_m == 0) {
+        cout << "Your age in " << desire_m << "/" << desire_y << " is : " << lived_y << " years";
+    }
+}

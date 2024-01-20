@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+  
+int main() {
+    cout << "Please Enter a number of Three Digits:" << endl;
+    int input;
+    int d1, d2, d3; // di stands for digit one, two and three
+    cin >> input;
+    d1 = input / 100;
+    d2 = (input % 100) / 10;
+    d3 = (input % 10);
+    cout << "Sum of Square of Digits is:" << endl;
+    cout << d1 * d1 + d2 * d2 + d3 * d3; // sum up all the digits power to 2
+    return 0;
+}

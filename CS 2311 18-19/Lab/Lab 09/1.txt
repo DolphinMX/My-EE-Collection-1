@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+ 
+class employee {
+public:
+    employee();
+    employee(int, int);
+    void set(int, int);
+    void computeNetSalary();
+    void get();
+private:
+    int basic_sal, med_allow, h_rent;
+    double net_sal;
+ 
+};
+ 
+employee::employee() {
+    basic_sal = 3000;
+    med_allow = 500;
+    h_rent = 1350;
+}
+ 
+employee::employee(int bs, int ma){
+    basic_sal = bs;
+    med_allow = ma;
+}
+ 
+void employee::set(int bs, int ma){
+    basic_sal = bs;
+    med_allow = ma;
+}
+ 
+void employee::computeNetSalary(){
+    net_sal = basic_sal + med_allow + (0.45 * basic_sal);
+}
+ 
+void employee::get(){
+    cout << net_sal << endl;
+}
+ 
+int main() {
+    employee emp1;
+    int bs, ma;
+    cout << "Enter basic salary for Emp2:" << endl;
+    cin >> bs;
+    cout << "Enter medical allowance for Emp2:" << endl;
+    cin >> ma;
+    employee emp2(bs, ma);
+    cout << "The net salary for Emp1 is ";
+    emp1.computeNetSalary();
+    emp1.get();
+    cout << "The net salary for Emp2 is ";
+    emp2.computeNetSalary();
+    emp2.get();
+    cout << "Enter basic salary for Emp1:" << endl;
+    cin >> bs;
+    cout << "Enter medical allowance for Emp1:" << endl;
+    cin >> ma;
+    emp1.set(bs, ma);
+    cout << "The net salary for Emp1 is ";
+    emp1.computeNetSalary();
+    emp1.get();
+    return 0;
+}

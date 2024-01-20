@@ -1,0 +1,212 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+  
+using namespace std;
+  
+class Card {
+private:
+    char *face;
+    char *suit;
+    int value;    // value depends just on the face
+  
+public:
+    Card();
+  
+    void setFace(char *f);
+    char *getFace();
+  
+    void setSuit(char *s);
+    char *getSuit();
+  
+    void setValue(int i);
+    int getValue();
+  
+    // implement this friend function for comparing cards
+    friend int compare(Card, Card);
+  
+};
+  
+// default constructor
+// pointers is initialized to NULL, numbers to zero
+Card::Card() {
+    face = NULL;
+    suit = NULL;
+    value = 0;
+}
+  
+void Card::setFace(char *f) {
+    face = f;
+}
+  
+char *Card::getFace() {
+    return face;
+}
+  
+void Card::setSuit(char *s) {
+    suit = s;
+}
+  
+char *Card::getSuit() {
+    return suit;
+}
+  
+void Card::setValue(int v) {
+    value = v;
+}
+  
+int Card::getValue() {
+    return value;
+}
+  
+// the following function compare two cards in the following manner
+// clubs < diamonds < hearts < spades
+// King > Queen > Jack ... > Three > Deuce > Ace
+// return 1 if cur is bigger than prev, and -1 otherwise
+int compare(Card cur, Card prev) {
+    if (cur.value > prev.value) {
+        return 1;
+    }
+    else if (cur.value == prev.value) {
+        if (cur.suit[0] > prev.suit[0]) {
+            return 1;
+        }
+    }
+    return -1;
+}
+  
+  
+void filldeck(Card *, char[][10], char[][10]);
+  
+void shuffle(Card *);
+  
+int deal(Card *, int);
+  
+const int decksize = 52;
+  
+  
+// fill the deck with 52 cards sequentially with the original order in wFace and wSuit
+// that is, the 13 cards should be Ace of Hearts, Deuce of Hearts, ..., King of Hearts
+// the next 13 cards are Ace of Diamonds, ..., King of Diamonds, and so on
+// The value for each Card is set according to its face: Ace has a value of 1,
+// Deuce 2, Three 3, ..., Jack 11, Queen 12, King 13
+void filldeck(Card *wDeck, char wFace[][10], char wSuit[][10]) {
+    for (int i = 0; i < decksize; i++) {
+        wDeck[i].setFace(wFace[i % 13]);
+        wDeck[i].setSuit(wSuit[i / 13]);
+        wDeck[i].setValue(i % 13 + 1);
+    }
+}
+  
+// for each card of the deck, randomly shuffle it with another in the deck
+void shuffle(Card *wDeck) {
+    for (int i = 0; i < decksize; i++) {
+        int j = rand() % decksize;
+        // swap cards i and j
+        Card temp = wDeck[j];
+        wDeck[j] = wDeck[i];
+        wDeck[i] = temp;
+    }
+}
+  
+// deals one card of the i-th hand from wDeck, and check if it's bigger/smaller than
+// the previous hand
+int deal(Card *wDeck, int i) {
+    cout << "Hand " << i << ": ";
+    cout << wDeck[i - 1].getFace() << " of " << wDeck[i - 1].getSuit() << ". ";
+  
+    int result = 0;
+    if (i > 1) {
+        result = compare(wDeck[i - 1], wDeck[i - 2]);
+    }
+    else
+        cout << endl;
+    return result;
+}
+  
+  
+int main() {
+    Card deck[decksize]; // a constant of value 52
+  
+    char face[][10] =
+    { "Ace", "Deuce", "Three", "Four", "Five",
+     "Six", "Seven", "Eight", "Nine", "Ten",
+     "Jack", "Queen", "King" };
+  
+    char suit[][10] =
+    { "Hearts", "Diamonds", "Clubs", "Spades" };
+  
+    int seed;
+    cout << "Enter the seed for random number generation: ";
+    cin >> seed;
+    srand(seed);    // this sets the seed of random number generation
+  
+    filldeck(deck, face, suit);
+    shuffle(deck);
+  
+    // game begins
+    int hand = 1, balance = 10;
+    char next = 'y';
+  
+    cout << "### CS2311 High Card Game Begins! ###\n";
+  
+    for (; (next != 'n') && (hand <= decksize); hand++) {
+        if (next == 'y') { 
+            deal(deck, hand);
+            cout << "Your balance is " << balance << " dollars. Your bet? ";
+        }
+        else if (next == 'b') {
+            if (deal(deck, hand) == 1) {
+                cout << "BIGGER than the previous hand. WIN! ";
+                balance += 10;
+            }
+            else {
+                cout << "SMALLER than the previous hand. LOSE! ";
+                balance -= 10;
+            }
+            if (balance > 0) {
+                cout << "Your balance is " << balance << " dollars. Your bet? ";
+            }
+            else {
+                cout << "Your balance is " << balance << " dollars." << endl;
+                break;
+            }
+        }
+        else if (next == 's') {
+            if (deal(deck, hand) == 1) {
+                cout << "BIGGER than the previous hand. LOSE! ";
+                balance -= 10;
+            }
+            else {
+                cout << "SMALLER than the previous hand. WIN! ";
+                balance += 10;
+            }
+            if (balance > 0) {
+                cout << "Your balance is " << balance << " dollars. Your bet? ";
+            }
+            else {
+                cout << "Your balance is " << balance << " dollars." << endl;
+                break;
+            }
+        }
+        cin >> next;
+        if (next == 'n') {
+            if (hand > 3) { // test if the player is able to leave
+                break;
+            }
+            else {
+                cout << "You can't quit now! Your bet? " << endl;
+                next = 'z'; // make the value of next is not n so that the loop wont end
+                hand--; // avoid invalid count
+            }
+        }
+    }
+  
+    if (balance > 0)
+        cout << "Game ends, you have " << balance << " dollars. Congratulations!\n";
+    else
+        cout << "\nGame ends, you are broke! :(\n";
+  
+    return 0;
+}

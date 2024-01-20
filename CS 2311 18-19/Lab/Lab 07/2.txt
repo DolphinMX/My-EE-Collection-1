@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+  
+int main() {
+    cout << "Enter 10 Elements of Set A:" << endl;
+    int seta[10];
+    int count = 0;
+    for (int i = 0; i < 10; i++) {
+        cin >> seta[i];
+    }
+    cout << "Enter 10 Elements of set B:" << endl;
+    int setb[10];
+    for (int i = 0; i < 10; i++) {
+        cin >> setb[i];
+    }
+    bool flag = false;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (seta[i] == setb[j]) {
+                flag = true;
+            }
+        }
+    }
+    if (flag == true) {
+        cout << "The Intersected Elements of Set A and B are: " << endl;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (seta[i] == setb[j]) {
+                    cout << seta[i] << ' ';
+                }
+            }
+        }
+    }
+    else {
+        cout << "The Intersected Element of Set A and B are not Found.";
+    }
+    return 0;
+}

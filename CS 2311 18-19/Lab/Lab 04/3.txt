@@ -1,0 +1,59 @@
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    int a;
+    int b;
+    char operation;
+    cout << "Enter the equation : ";
+    cin >> a >> operation >> b;
+    if(!cin){ // cin returns false if the input is not valid
+        cout << "Invalid input." << endl;
+    }
+    // if the input operation is not the desire operator, cout invalid operation
+    else if((operation != '+') && (operation != '-') && (operation != '*') && (operation != '/') && (operation != '%') && (operation != '>') && (operation != '<') && (operation != '=')){
+        cout << "Invalid operation." << endl;
+    }
+    switch (operation){
+    case '=':
+        if((a == b) == true){
+            cout << "(" <<a << "==" << b << ")" << "=" << 'T' << endl;
+        }
+        else{
+            cout << "(" << a << "==" << b << ")" << "=" << 'F' << endl;
+        }
+        break;
+    case '>':
+        if(operation == true){
+            cout << a << ">" << b << "=" << 'T' << endl;
+        }
+        else {
+            cout << a << ">" << b << "=" << 'F' << endl;
+        }
+        break;
+    case '<':
+        if((a<b) == true) {
+            cout << a << "<" << b << "=" << 'T' << endl;
+        }
+        else {
+            cout << a << "<" << b << "=" << 'F' << endl;
+        }
+        break;
+    case '+':
+        cout << a << "+" << b << "=" << a+b << endl;
+        break;
+    case '-':
+        cout << a << "-" << b << "=" << a-b << endl;
+        break;
+    case '*':
+        cout << a << "*" << b << "=" << a*b << endl;
+        break;
+    case '/':
+        cout << a << "/" << b << "=" << a/(double)b << endl; // type casting for ans in floating point format
+        break;
+    case '%':
+        cout << a << "%" << b << "=" << a % b << endl;
+        break;
+    }
+    return 0;
+}

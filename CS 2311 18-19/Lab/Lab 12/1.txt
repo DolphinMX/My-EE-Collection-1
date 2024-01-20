@@ -1,0 +1,28 @@
+#include <fstream>
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    ifstream fin;
+    ofstream fout;
+    int num[100];
+    fin.open("Q1input.txt");
+    fout.open("Q1output.txt");
+    int i = 0;
+    int count = 0;
+    while (fin >> num[i]) {
+        count += num[i];
+        i++;
+    }
+    cout << "Sum of ";
+    fout << "Sum of ";
+    for (int j = 0; j != i; j++) {
+        cout << num[j] << " ";
+        fout << num[j] << " ";
+    }
+    cout << "is " << count;
+    fout << "is " << count;
+    fin.close();
+    fout.close();
+    return 0;
+}

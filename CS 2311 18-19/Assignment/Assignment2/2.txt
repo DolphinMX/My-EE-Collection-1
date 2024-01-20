@@ -1,0 +1,122 @@
+#include <iostream>
+using namespace std;
+ 
+// this class storing a big number in a form of char array
+class bigNum {
+public:
+    bigNum(); // default constructor
+    bigNum(char input[], int size);
+    bigNum(bigNum &bNum); // copy constructor
+    void getNum(); 
+    bigNum addNum(bigNum &bNum1, bigNum &bNum2);
+private:
+    char num[100];
+    int n;
+};
+ 
+bigNum::bigNum() {
+    // initialization process with a default constructor
+    for (int i = 0; i < 100; i++) {
+        num[i] = 'X';
+    }
+    n = 100;
+}
+ 
+bigNum::bigNum(bigNum &bNum) {
+    // copy the elements
+    for (int i = 0; i < bNum.n; i++) {
+        num[i] = bNum.num[i];
+    }
+    n = bNum.n;
+}
+ 
+// store the input and size
+bigNum::bigNum(char input[], int size) {
+    for (int i = 0; i < size; i++) {
+        num[i] = input[i];
+    }
+    n = size;
+}
+ 
+// output the big number it stores in an inverted order
+void bigNum::getNum() {
+    for (int i = n - 1; i >= 0; i--) {
+        cout << num[i];
+    }
+}
+ 
+// the function which add up the two value and return the result bigNum object
+bigNum bigNum::addNum(bigNum &bNum1, bigNum &bNum2) {
+    char result[100];
+    int count = 0; // count donates the size of the result char array
+    bool carry = false; // the boolean variable carry indicates whether it needs to add one to the next digit 
+    // swap bNum1 and bNum2 number if bNum1 is shorter than bNum2
+    if (bNum1.n < bNum2.n) {
+        bigNum temp(bNum1);
+        bNum1 = bigNum(bNum2);
+        bNum2 = bigNum(temp);
+    }
+    int temp;
+    for (int i = bNum2.n - 1; i >= 0; i--) { // add the number starting from the last digit
+        if (carry) {
+            // (bNum1.n - bNum2.n + i donates the index of last element of bNum1
+            temp = (bNum1.num[bNum1.n - bNum2.n + i] - '0') + (bNum2.num[i] - '0') + 1; // if carry is true, add extra one to the digit
+            carry = false;
+        }
+        else {
+            temp = (bNum1.num[bNum1.n - bNum2.n + i] - '0') + (bNum2.num[i] - '0');
+        }
+        // if the sum of the two digits is larger than 9, generate carry to next digit
+        if (temp > 9) {
+            // temp % 10 donates the first degit, neglecting the ten's digit
+            result[count] = (temp % 10) + '0';
+            count++;
+            carry = true;
+        }
+        else {
+            result[count] = temp + '0';
+            count++;
+        }
+    }
+    // insert the remaining digit to the array
+    for (int i = bNum1.n - bNum2.n - 1; i >= 0; i--) {
+        if (carry) {
+            temp = (bNum1.num[i] - '0') + 1;
+            carry = false;
+        }
+        else {
+            temp = bNum1.num[i] - '0';
+        }
+        if (temp > 9) {
+            result[count] = (temp % 10) + '0';
+            count++;
+            carry = true;
+        }
+        else {
+            result[count] = temp + '0';
+            count++;
+        }
+    }
+    // the carry generates by the first big number digit
+    if (carry) {
+        result[count] = '1';
+        count++;
+        carry = false;
+    }
+    bigNum resultNum(result, count);
+    return resultNum;
+}
+ 
+int main() {
+    cout << "Please enter the equation:" << endl;
+    char temp1[100]; // store the first big number
+    char temp2[100]; // store the second one
+    char op; // separate the input of the two number
+    cin >> temp1 >> op >> temp2;
+    bigNum num1(temp1, strlen(temp1)); // create a bigNum object with elements value and number of elements in temp1
+    bigNum num2(temp2, strlen(temp2));
+    cout << "The result is:" << endl;
+    bigNum result; // the object result store the result value
+    result.addNum(num1, num2).getNum(); // output the result
+    return 0;
+}

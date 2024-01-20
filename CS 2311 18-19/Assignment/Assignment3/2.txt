@@ -1,0 +1,123 @@
+#include <iostream>
+using namespace std;
+  
+class contact{
+public:
+    contact();
+    contact(char *n, char *p);
+    void output();
+    friend void sort(contact **list, int c);
+    friend void search(contact **list, char *keyword, int c);
+private:
+    char name[100];
+    char pnum[100];
+};
+  
+// default constructor
+contact::contact() {
+    for (int i = 0; i < 100; i++) {
+        name[i] = '0';
+        pnum[i] = 'Z';
+    }
+}
+  
+// constructor that record the input name and their own number
+contact::contact(char *n, char *p) {
+    for (int i = 0; i < 100; i++) {
+        name[i] = n[i];
+        pnum[i] = p[i];
+    }
+}
+  
+// output the name and his/her number
+void contact::output() {
+    cout << name << " " << pnum << endl;
+}
+  
+// this sort the namelist so it lists in alphabetical order
+void sort(contact *cl[100], int c) {
+    for (int i = 1; i < c; i++) {
+        for (int j = 1; j < c; j++) {
+            // if the last element of one name or another name is accessed, end the loop
+            for (int k = 0; k < strlen(cl[j]->name) && k < strlen(cl[j - 1]->name); k++) {
+                if (cl[j]->name[k] < cl[j - 1]->name[k]) {
+                    // if the current one is smaller than the former one, swap them
+                    contact temp = *cl[j];
+                    *cl[j] = *cl[j - 1];
+                    *cl[j - 1] = temp;
+                }
+                else if (cl[j]->name[k] == cl[j - 1]->name[k]) {
+                    continue; // if the first digit are the same => check the second one and so on
+                }
+                break; // only if the two char are the same can process to next loop
+            }
+        }
+    }
+}
+  
+// look for data that match keyword and print them, if no data matches, output no result
+void search(contact **list, char *key, int c) {
+    int rCon = 0;
+    int result[100] = {-1}; // this array stores the matched result's index
+    // this loop check the name part
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < strlen(list[i]->name) - strlen(key) + 1; j++) { 
+            int count = 0;
+            for (int k = 0; k < strlen(key); k++) {
+                if (key[k] == list[i]->name[k + j]) {
+                    count++;
+                }
+            }
+            if (count == strlen(key)) {
+                result[rCon] = i;
+                rCon++;
+                break;
+            }
+        }
+    }
+    // this loop check the phone number part
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < strlen(list[i]->pnum) - strlen(key) + 1; j++) {
+            int count = 0;
+            for (int k = 0; k < strlen(key); k++) {
+                if (key[k] == list[i]->pnum[k + j]) {
+                    count++;
+                }
+            }
+            if (count == strlen(key)) {
+                result[rCon] = i;
+                rCon++;
+                break;
+            }
+        }
+    }
+    if(result[0] == -1){
+        cout << "No result." << endl;
+    }
+    else {
+        cout << "Search result:" << endl;
+        for (int i = 0; i < rCon; i++) {
+            list[result[i]]->output();
+        }
+    }
+}
+  
+int main() {
+    cout << "Input the number of contact people:" << endl;
+    int count; // represent the total number of contact people
+    cin >> count;
+    contact *list[100];
+    cout << "Input the contact list:" << endl;
+    for (int i = 0; i < count; i++) {
+        char tempN[100]; 
+        char tempP[100];
+        cin >> tempN >> tempP;
+        list[i] = new contact(tempN, tempP); // create a contact with the name and number provided
+    }
+    sort(list, count);
+    cout << "Input the search keyword:" << endl;
+    char keyword[100];
+    cin >> keyword;
+    search(list, keyword, count);
+    return 0;
+}

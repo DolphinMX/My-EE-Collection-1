@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+  
+int main() {
+    int n = 0;
+    bool flag = true;
+    int pCount = 0;
+    int nCount = 0;
+    int zCount = 0;
+    int pSum = 0;
+    int nSum = 0;
+    double average = 0;
+    cout << "Enter Numbers! Enter -999 to Stop: " << endl;
+    do {
+        cin >> n;
+        if (n == -999){
+            if (pCount > 0) {
+            average = pSum / (double)pCount;
+            } else {
+                average = 0;
+            }
+            cout << "Total Positive Numbers are: " << pCount << endl;
+            cout << "Total Negative Numbers are: " << nCount << endl;
+            cout << "Total Zeros are: " << zCount << endl;
+            cout << "Sum of Positive Numbers is: " << pSum << endl;
+            cout << "Sum of Negative Numbers is: " << nSum << endl;
+            cout << "Average of Positive Numbers is: " << average << endl;
+            flag = false;
+        }
+        else if (n > 0) {
+            pCount++;
+            pSum += n;
+        } else if (n < 0) {
+            nCount++;
+            nSum += n;
+        } else if (n == 0) {
+            zCount++;
+        }
+  
+    }   while (flag);
+    return 0;
+}

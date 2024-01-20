@@ -1,0 +1,44 @@
+#include <iostream>
+ 
+using namespace std;
+const int N = 10;
+ 
+// TODO 1: Complete the function declaration, which
+//        takes 2 integers using pass-by-reference
+void Swap(int &a, int &b) {
+    // TODO2: Complete the function of Swap
+    //       you may declare local variables if needed
+    int temp = a;
+    a = b;
+    b = temp;
+}
+ 
+ 
+int main() {
+    int Num[N];
+    int i, j;
+ 
+    cout << "Enter "<< N << " numbers:"<<endl;
+    for (i = 0; i < N; i++)
+        cin >> Num[i];
+ 
+ 
+    // TODO3: Fill in the indexes of the 2 for-loop so
+    //       as to sort numbers in ascending order
+    for (i =1;i<N; i++) {
+        for (j =1;j<N; j++) {
+            if (Num[j] < Num[j-1]) {  // TODO4: Fill in the index and relational operator
+                Swap(Num[j], Num[j-1]);
+            }
+        }
+    }
+ 
+    cout << "The sorted numbers:\n";
+ 
+    for (i = 0; i < N; i++) {
+        cout << Num[i] << " ";
+    }
+    cout << endl;
+    cin >> Num[0];
+    return 0;
+}

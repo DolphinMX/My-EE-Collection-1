@@ -1,0 +1,96 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+ 
+class triangle {
+public:
+    triangle();
+    triangle(double, double, double);
+    void setSides(double, double, double);
+    void computeArea();
+    void getArea();
+    void largertriangle(triangle, triangle);
+    double getArea2();
+private:
+    double side1, side2, side3;
+    double area;
+};
+ 
+triangle::triangle(){
+    side1 = 0;
+    side2 = 0;
+    side3 = 0;
+    area = 0;
+}
+ 
+triangle::triangle(double s1, double s2, double s3){
+    side1 = s1;
+    side2 = s2;
+    side3 = s3;
+    area = 0;
+}
+ 
+void triangle::largertriangle(triangle t1, triangle t2){
+    cout << fixed;
+    if(t1.area > t2.area) {
+        cout << setprecision(2) <<"The area of triangle1 (" << t1.area << ") is greater than that of triangle2 (" << t2.area << ")." << endl;
+    }
+    else {
+        cout << setprecision(2) <<"The area of triangle1 (" << t1.area << ") is not greater than that of triangle2 (" << t2.area << ")." << endl;
+    }
+}
+ 
+void triangle::setSides(double s1, double s2, double s3){
+    side1 = s1;
+    side2 = s2;
+    side3 = s3;
+}
+ 
+void triangle::computeArea() {
+    double s = (side1 + side2 + side3) / 2;
+    area = sqrt(s * (s - side1) * (s - side2) * (s - side3));
+}
+ 
+void triangle::getArea(){
+    cout << fixed;
+    cout << setprecision(2) << area << endl;
+}
+ 
+double triangle::getArea2(){
+    return area;
+}
+ 
+int main() {
+    cout << "Enter a number between 1 and 10:" << endl;
+    int n;
+    cin >> n;
+    triangle t[10];
+    for(int i = 0; i < n; i++){
+        int s1,s2,s3;
+        cout << "Enter the sides of triangle " << i+1 << ":" << endl;
+        cin >> s1 >> s2 >> s3;
+        t[i].setSides(s1,s2,s3);
+        t[i].computeArea();
+    }
+    for(int i = 0; i < n; i++) {
+        cout << "Area of triangle " << i + 1 << ": ";
+        t[i].getArea();
+    }
+    int i;
+    double temp = 0;
+    for (i = 0; i < n; i++){
+        if(t[i].getArea2() > temp){
+            temp = t[i].getArea2();
+        }
+    }
+    for (int j = 0; j < n; j++){
+        if(t[j].getArea2() == temp){
+            i = j;
+            break;
+        }
+    }
+    cout << fixed;
+    cout << setprecision(2) <<"Triangle " << i + 1 << " has the largest area: " << temp;
+    return 0;
+}

@@ -1,0 +1,28 @@
+#include <fstream>
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    cout << "Enter file name (maximum of 15 characters):" << endl;
+    char filename[16];
+    cin >> filename;
+    ifstream fin;
+    fin.open(filename);
+    int count[26] = {0};
+    char x;
+    while (fin >> x) {
+        if (x >= 'A' && x <= 'Z') {
+            count[x - 'A']++;
+        }
+        else if (x >= 'a' && x <= 'z') {
+            count[x - 'a']++;
+        }
+    }
+    for (int i = 0; i < 26; i++) {
+        if (count[i] != 0) {
+            cout << "The occurrence of " << "\'" << (char)('a' + i) << "\'" << " is " << count[i] << endl;
+        }
+    }
+    fin.close();
+    return 0;
+}

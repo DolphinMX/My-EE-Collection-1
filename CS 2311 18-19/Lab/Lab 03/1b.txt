@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    double width;
+    double height;
+    cout << "Please enter the width" << endl;
+    cin >> width;
+    cout << "Please enter the height" << endl;
+    cin >> height;
+    cout << "The area is " << width << "*" << height << "=" << width * height;
+    return 0;
+}

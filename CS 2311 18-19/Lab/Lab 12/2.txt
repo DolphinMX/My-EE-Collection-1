@@ -1,0 +1,25 @@
+#include <fstream>
+#include <iostream>
+using namespace std;
+ 
+int main() {
+    ifstream fin;
+    fin.open("Q2input.txt");
+    char x;
+    int c[3] = {0};
+    while (fin >> x) {
+        if ((x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z')) {
+            c[0]++;
+        }
+        else if (x >= '0' && x <= '9') {
+            c[1]++;
+        }
+        else
+            c[2]++;
+    }
+    cout << "The number of characters is " << c[0] << endl;
+    cout << "The number of integer numbers is " << c[1] << endl;
+    cout << "The number of other characters is " << c[2] << endl;
+    fin.close();
+    return 0;
+}
